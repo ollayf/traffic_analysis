@@ -3,6 +3,7 @@ import os
 import shutil
 import datetime
 import logging
+import time
 
 def download_data(start_dt, end_dt, parent_dir, increment=60):
     if isinstance(increment, (int, float)):
@@ -19,8 +20,13 @@ def download_data(start_dt, end_dt, parent_dir, increment=60):
         print(dt_vars)
         url = base_url.format(*dt_vars)
         print('Url', url)
+        logging.info("""Iteration No. {}
+        Collecting data from {}""".format(i, url))
         get_images(url, parent_dir, dt_id)
         start_dt += increment
+        msg = 'Successfully downloaded all messages'
+        logging.info(msg)
+        print(msg)
 
 
 def dl_image(url, save_dir, dt_id):
@@ -36,6 +42,7 @@ def dl_image(url, save_dir, dt_id):
         
         print('Downloaded Img', url)
     else:
+        logging.warning('Image doesnt exist')
         print('Image Doesn\'t Exist')
 
 
@@ -53,6 +60,10 @@ def get_images(url, parent_dir, dt_id):
         dl_image(img_url, save_dir, dt_id)
 
 if __name__ == '__main__':
+    log_file = 'logs/{}.txt'.format(time.strftime('%Y%m%d_%H%M%S'))
+    logging.basicConfig(filename=log_file, filemode='a', \
+        format='%(asctime)s: %(levelname)s | %(message)s', \
+        datefmt='%d/%m/%Y_%H%M%S', level=logging.INFO)
     # url = "https://api.data.gov.sg/v1/transport/traffic-images?date_time=2021-02-03T22%3A48%3A10%2B08%3A00"
     # img_url = 'https://images.data.gov.sg/api/traffic-images/2021/02/196bfcf5-7c64-45f2-b9e5-ee7622ef868b.jpg'
     # get_images(url, './data')
