@@ -21,7 +21,7 @@ def download_data(start_dt, end_dt, parent_dir, increment=60):
         url = base_url.format(*dt_vars)
         print('Url', url)
         logging.info("""Iteration No. {}
-        Collecting data from {}""".format(i, url))
+        Collecting data for {}\nfrom {}""".format(i,start_dt, url))
         get_images(url, parent_dir, dt_id)
         start_dt += increment
         msg = 'Successfully downloaded all messages'
@@ -68,6 +68,6 @@ if __name__ == '__main__':
     # img_url = 'https://images.data.gov.sg/api/traffic-images/2021/02/196bfcf5-7c64-45f2-b9e5-ee7622ef868b.jpg'
     # get_images(url, './data')
 
-    start_dt = datetime.datetime(2020, 1, 1)
+    start_dt = datetime.datetime(2020, 1, 10, 19, 31)
     end_dt = datetime.datetime(2021, 1, 1)
     download_data(start_dt, end_dt, './data')
